@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="PhpServiceBus Doctrine2 Persistence Test Suite">
+            <directory>tests/acceptance</directory>
+            <directory>vendor/phpservicebus/psb/tests/acceptance</directory>
+        </testsuite>
+    </testsuites>
+    <listeners>
+        <listener class="acceptancesupport\PSB\Core\PhpUnit\TestExecutionConfiguratorLoader"
+                  file="vendor/phpservicebus/psb/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
+            <arguments>
+                <string>acceptancesupport\PSB\Core\RabbitMq\RabbitMqTestExecutionConfigurator</string>
+                <array name="connection credentials">
+                    <element key="host">
+                        <string>127.0.0.1</string>
+                    </element>
+                    <element key="port">
+                        <string>5672</string>
+                    </element>
+                    <element key="vhost">
+                        <string>/</string>
+                    </element>
+                    <element key="login">
+                        <string>guest</string>
+                    </element>
+                    <element key="password">
+                        <string>guest</string>
+                    </element>
+                </array>
+            </arguments>
+        </listener>
+        <listener class="acceptancesupport\PSB\Core\PhpUnit\TestExecutionConfiguratorLoader"
+                  file="vendor/phpservicebus/psb/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
+            <arguments>
+                <string>acceptancesupport\PSB\Persistence\Doctrine2\Doctrine2TestExecutionConfigurator</string>
+                <array name="connection params">
+                    <element key="host">
+                        <string>127.0.0.1</string>
+                    </element>
+                    <element key="dbname">
+                        <string>servicebus</string>
+                    </element>
+                    <element key="user">
+                        <string>root</string>
+                    </element>
+                    <element key="password">
+                        <string>123</string>
+                    </element>
+                    <element key="driver">
+                        <string>pdo_mysql</string>
+                    </element>
+                </array>
+                <!--using a json encoding for the storage configs due to a bug in phpunit -->
+                <!--which does not handle nested arrays correctly-->
+                <string key="storage_configs">
+                    <![CDATA[
+                    {
+                        "OUTBOX": {
+                            "OUTBOX_MESSAGES_TABLE_NAME": {
+                                "table_name": "psb_outbox_messages",
+                                "schema_provider":
+                                "PSB\\Persistence\\Doctrine2\\Outbox\\SchemaProvider\\OutboxMessageSchemaProvider"
+                            },
+                            "OUTBOX_ENDPOINTS_TABLE_NAME": {
+                                "table_name": "psb_outbox_endpoints",
+                                "schema_provider":
+                                "PSB\\Persistence\\Doctrine2\\Outbox\\SchemaProvider\\OutboxEndpointSchemaProvider"
+                            }
+                        }
+                    }
+                    ]]>
+                </string>
+            </arguments>
+        </listener>
+    </listeners>
+</phpunit>

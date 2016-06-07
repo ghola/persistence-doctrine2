@@ -1,0 +1,22 @@
+suites:
+  default_suite:
+    namespace: PSB\Persistence\Doctrine2
+    psr4_prefix: PSB\Persistence\Doctrine2
+    src_path: %paths.config%/src
+    spec_path: %paths.config%/tests
+extensions:
+  - specsupport\PSB\Persistence\Doctrine2\PhpSpec\Extension\DbalFixtureExtension
+dbal_fixture_options:
+  storage_configs:
+    OUTBOX: # storage type as per PSB\Core\Persistence\StorageType::OUTBOX
+      OUTBOX_MESSAGES_TABLE_NAME: # as per Doctrine2KnownSettingsEnum::OUTBOX_MESSAGES_TABLE_NAME
+        table_name: psb_outbox_messages
+        schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxMessageSchemaProvider
+      OUTBOX_ENDPOINTS_TABLE_NAME: # as per Doctrine2KnownSettingsEnum::OUTBOX_ENDPOINTS_TABLE_NAME
+        table_name: psb_outbox_endpoints
+        schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxEndpointSchemaProvider
+  connection_params:
+    dbname: <DATABASE NAME>
+    user: root
+    password: <PASSWORD>
+    driver: pdo_mysql

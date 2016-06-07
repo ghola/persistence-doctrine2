@@ -1,0 +1,10 @@
+.idea
+.buildpath
+.project
+.settings/
+vendor
+build
+coverage
+phpspec.yml
+phpunit.xml
+composer.lock
