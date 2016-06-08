@@ -16,7 +16,7 @@ dbal_fixture_options:
         table_name: psb_outbox_endpoints
         schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxEndpointSchemaProvider
   connection_params:
-    dbname: <DATABASE NAME>
+    dbname: servicebus
     user: root
-    password: <PASSWORD>
+    password:
     driver: pdo_mysql

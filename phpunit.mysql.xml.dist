@@ -12,12 +12,12 @@
     <testsuites>
         <testsuite name="PhpServiceBus Doctrine2 Persistence Test Suite">
             <directory>tests/acceptance</directory>
-            <directory>vendor/phpservicebus/psb/tests/acceptance</directory>
+            <directory>vendor/phpservicebus/core/tests/acceptance</directory>
         </testsuite>
     </testsuites>
     <listeners>
         <listener class="acceptancesupport\PSB\Core\PhpUnit\TestExecutionConfiguratorLoader"
-                  file="vendor/phpservicebus/psb/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
+                  file="vendor/phpservicebus/core/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
             <arguments>
                 <string>acceptancesupport\PSB\Core\RabbitMq\RabbitMqTestExecutionConfigurator</string>
                 <array name="connection credentials">
@@ -40,7 +40,7 @@
             </arguments>
         </listener>
         <listener class="acceptancesupport\PSB\Core\PhpUnit\TestExecutionConfiguratorLoader"
-                  file="vendor/phpservicebus/psb/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
+                  file="vendor/phpservicebus/core/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
             <arguments>
                 <string>acceptancesupport\PSB\Persistence\Doctrine2\Doctrine2TestExecutionConfigurator</string>
                 <array name="connection params">
@@ -54,7 +54,7 @@
                         <string>root</string>
                     </element>
                     <element key="password">
-                        <string>123</string>
+                        <string/>
                     </element>
                     <element key="driver">
                         <string>pdo_mysql</string>

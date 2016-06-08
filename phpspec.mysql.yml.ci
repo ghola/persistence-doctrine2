@@ -6,6 +6,10 @@ suites:
     spec_path: %paths.config%/tests
 extensions:
   - specsupport\PSB\Persistence\Doctrine2\PhpSpec\Extension\DbalFixtureExtension
+  - PhpSpec\Extension\CodeCoverageExtension
+code_coverage:
+  format: clover
+  output: coverage.clover
 dbal_fixture_options:
   storage_configs:
     OUTBOX: # storage type as per PSB\Core\Persistence\StorageType::OUTBOX
@@ -16,5 +20,7 @@ dbal_fixture_options:
         table_name: psb_outbox_endpoints
         schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxEndpointSchemaProvider
   connection_params:
-    memory: true
-    driver: pdo_sqlite
+    dbname: servicebus
+    user: root
+    password:
+    driver: pdo_mysql
