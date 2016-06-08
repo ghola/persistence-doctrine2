@@ -6,6 +6,7 @@
 /.gitignore                export-ignore
 /phpunit.mysql.xml.dist    export-ignore
 /phpunit.sqlite.xml.dist   export-ignore
+/phpspec.mysql.yml.ci      export-ignore
 /phpspec.mysql.yml.dist    export-ignore
 /phpspec.sqlite.yml.dist   export-ignore
 /tests                     export-ignore
