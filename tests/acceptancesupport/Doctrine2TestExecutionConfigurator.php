@@ -42,6 +42,9 @@ class Doctrine2TestExecutionConfigurator implements EndpointTestExecutionConfigu
         $persistenceConfigurator->useConnectionParameters($this->connectionParams);
     }
 
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function cleanup()
     {
         $connection = DriverManager::getConnection($this->connectionParams);

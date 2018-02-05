@@ -1,9 +1,8 @@
 language: php
 
 php:
-  - 5.5
-  - 5.6
   - 7.0
+  - 7.1
 
 env:
   - DB=mysql
@@ -15,7 +14,10 @@ services:
   - rabbitmq
 
 install:
-  - echo | pecl install -f amqp-1.7.0
+  - sudo add-apt-repository ppa:ondrej/php -y
+  - sudo apt-get update
+  - sudo apt-get install -y librabbitmq-dev
+  - echo | pecl install -f amqp-1.9.3
 
 before_script:
   - travis_retry composer self-update
@@ -25,12 +27,12 @@ before_script:
   - if [[ $DB == 'mysql' ]]; then mysql -e 'CREATE DATABASE IF NOT EXISTS servicebus;'; fi
 
 script:
-  - if [[ $TRAVIS_PHP_VERSION != '5.6' || $DB != 'mysql' ]]; then bin/phpspec run --config phpspec.$DB.yml.dist; fi
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' && $DB == 'mysql' ]]; then bin/phpspec run --config phpspec.mysql.yml.ci; fi
+  - if [[ $TRAVIS_PHP_VERSION != '7.1' || $DB != 'mysql' ]]; then bin/phpspec run --config phpspec.$DB.yml.dist; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.1' && $DB == 'mysql' ]]; then bin/phpspec run --config phpspec.mysql.yml.ci; fi
   - bin/phpunit -c phpunit.$DB.xml.dist
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION == '5.6' && $DB == 'mysql' ]]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.1' && $DB == 'mysql' ]]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
 
 cache:
   directories:
