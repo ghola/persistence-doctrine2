@@ -44,6 +44,7 @@ class OutboxPersister
      * @param string $messageId
      *
      * @return array
+     * @throws \Throwable
      */
     public function get($endpointId, $messageId)
     {
@@ -52,8 +53,8 @@ class OutboxPersister
                 "SELECT * FROM {$this->messagesTableName} WHERE endpoint_id = ? AND message_id = ?",
                 [$endpointId, hex2bin($this->stripDashes($messageId))]
             )->fetch(\PDO::FETCH_ASSOC);
-        } catch (\Exception $e) {
-            throw $this->attemptToReconnectPresumedLostConnection($e);
+        } catch (\Throwable $t) {
+            throw $this->attemptToReconnectPresumedLostConnection($t);
         }
 
         if (!$result) {
@@ -91,7 +92,7 @@ class OutboxPersister
      * @param int    $endpointId
      * @param string $messageId
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function markAsDispatched($endpointId, $messageId)
     {
@@ -106,8 +107,8 @@ class OutboxPersister
                     hex2bin($this->stripDashes($messageId))
                 ]
             );
-        } catch (\Exception $e) {
-            throw $this->attemptToReconnectPresumedLostConnection($e);
+        } catch (\Throwable $t) {
+            throw $this->attemptToReconnectPresumedLostConnection($t);
         }
     }
 
@@ -116,13 +117,14 @@ class OutboxPersister
      * Attempts to reconnect once if disconnected.
      *
      * @return void
+     * @throws \Throwable
      */
     public function beginTransaction()
     {
         try {
             $this->connection->beginTransaction();
-        } catch (\Exception $e) {
-            throw $this->attemptToReconnectPresumedLostConnection($e);
+        } catch (\Throwable $t) {
+            throw $this->attemptToReconnectPresumedLostConnection($t);
         }
     }
 
@@ -133,6 +135,7 @@ class OutboxPersister
      * Reconnection should be done by rollBack.
      *
      * @return void
+     * @throws ConnectionException
      */
     public function commit()
     {
@@ -144,7 +147,7 @@ class OutboxPersister
      * It makes sure that the connection is in the correct state regardless of what happened before.
      * Correct state means that connection is not rollback only and does not have a transaction nesting level > 0
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
     public function rollBack()
     {
@@ -158,14 +161,14 @@ class OutboxPersister
                 $this->connection->rollBack();
             }
             $this->connection->rollBack();
-        } catch (\Exception $e) {
-            $rethrowable = $this->attemptToReconnectPresumedLostConnection($e);
+        } catch (\Throwable $t) {
+            $rethrowable = $this->attemptToReconnectPresumedLostConnection($t);
             /**
              * If connection is functional we need to make sure the connection is not rollback only.
              * This can only be achieved by starting a transaction and rolling it back (the "why" is found in
              * lines 1277-1279 of Doctrine\DBAL\Connection).
              */
-            if ($rethrowable === $e) {
+            if ($rethrowable === $t) {
                 $this->connection->beginTransaction();
                 $this->connection->rollBack();
             }
@@ -178,7 +181,6 @@ class OutboxPersister
      *
      * @param \DateTime $dateTime
      *
-     * @throws ConnectionException
      * @throws \Exception
      */
     public function removeEntriesOlderThan(\DateTime $dateTime)
@@ -194,6 +196,7 @@ class OutboxPersister
      * @param string $endpointName
      *
      * @return int
+     * @throws \Exception
      */
     public function fetchOrGenerateEndpointId($endpointName)
     {
@@ -236,11 +239,11 @@ class OutboxPersister
      * If connection is responsive or successfully reconnected it rethrows, relying on the bus retries
      * to re-execute everything from the beginning.
      *
-     * @param \Exception $e
+     * @param \Throwable $t
      *
-     * @return \Exception|CriticalErrorException
+     * @return \Throwable|CriticalErrorException
      */
-    private function attemptToReconnectPresumedLostConnection(\Exception $e)
+    private function attemptToReconnectPresumedLostConnection(\Throwable $t)
     {
         // presumably, any exception caught here is related to some connection error
         if (!$this->connection->ping()) {
@@ -248,12 +251,12 @@ class OutboxPersister
             try {
                 $this->connection->close();
                 $this->connection->connect();
-            } catch (\Exception $e) {
+            } catch (\Throwable $t) {
                 // if reconnecting fails, there is no way that the bus can continue to function
-                return new CriticalErrorException("Database connection failed.", 0, $e);
+                return new CriticalErrorException("Database connection failed.", 0, $t);
             }
         }
 
-        return $e;
+        return $t;
     }
 }
