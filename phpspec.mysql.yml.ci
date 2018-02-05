@@ -5,6 +5,11 @@ suites:
     src_path: '%paths.config%/src'
     spec_path: '%paths.config%/tests'
 extensions:
+  LeanPHP\PhpSpec\CodeCoverage\CodeCoverageExtension:
+    format:
+      - clover
+    output:
+      clover: coverage.clover
   specsupport\PSB\Persistence\Doctrine2\PhpSpec\Extension\DbalFixtureExtension:
     storage_configs:
       OUTBOX: # storage type as per PSB\Core\Persistence\StorageType::OUTBOX

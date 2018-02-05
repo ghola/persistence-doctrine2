@@ -1,4 +1,5 @@
 <?php
+
 namespace specsupport\PSB\Persistence\Doctrine2\PhpSpec;
 
 
@@ -29,7 +30,7 @@ abstract class DatabaseAwareSpec extends ObjectBehavior implements DatabaseAware
     }
 
     /**
-     * @param \commonsupport\PSB\Persistence\Doctrine2\SchemaHelperInterface $schemaHelper
+     * @param SchemaHelperInterface $schemaHelper
      */
     public function setSchemaHelper(SchemaHelperInterface $schemaHelper)
     {

@@ -1,21 +1,19 @@
 suites:
-  default_suite:
+  default:
     namespace: PSB\Persistence\Doctrine2
     psr4_prefix: PSB\Persistence\Doctrine2
-    src_path: %paths.config%/src
-    spec_path: %paths.config%/tests
+    src_path: '%paths.config%/src'
+    spec_path: '%paths.config%/tests'
 extensions:
-  - specsupport\PSB\Persistence\Doctrine2\PhpSpec\Extension\DbalFixtureExtension
-#    - PhpSpec\Extension\CodeCoverageExtension
-dbal_fixture_options:
-  storage_configs:
-    OUTBOX: # storage type as per PSB\Core\Persistence\StorageType::OUTBOX
-      OUTBOX_MESSAGES_TABLE_NAME: # as per Doctrine2KnownSettingsEnum::OUTBOX_MESSAGES_TABLE_NAME
-        table_name: psb_outbox_messages
-        schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxMessageSchemaProvider
-      OUTBOX_ENDPOINTS_TABLE_NAME: # as per Doctrine2KnownSettingsEnum::OUTBOX_ENDPOINTS_TABLE_NAME
-        table_name: psb_outbox_endpoints
-        schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxEndpointSchemaProvider
-  connection_params:
-    memory: true
-    driver: pdo_sqlite
+  specsupport\PSB\Persistence\Doctrine2\PhpSpec\Extension\DbalFixtureExtension:
+    storage_configs:
+      OUTBOX: # storage type as per PSB\Core\Persistence\StorageType::OUTBOX
+        OUTBOX_MESSAGES_TABLE_NAME: # as per Doctrine2KnownSettingsEnum::OUTBOX_MESSAGES_TABLE_NAME
+          table_name: psb_outbox_messages
+          schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxMessageSchemaProvider
+        OUTBOX_ENDPOINTS_TABLE_NAME: # as per Doctrine2KnownSettingsEnum::OUTBOX_ENDPOINTS_TABLE_NAME
+          table_name: psb_outbox_endpoints
+          schema_provider: PSB\Persistence\Doctrine2\Outbox\SchemaProvider\OutboxEndpointSchemaProvider
+    connection_params:
+      memory: true
+      driver: pdo_sqlite

@@ -4,6 +4,7 @@
 .settings/
 vendor
 build
+bin
 coverage
 phpspec.yml
 phpunit.xml
