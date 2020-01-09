@@ -9,3 +9,4 @@ coverage
 phpspec.yml
 phpunit.xml
 composer.lock
+.phpunit.result.cache

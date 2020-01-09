@@ -20,7 +20,7 @@
                   file="vendor/phpservicebus/core/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
             <arguments>
                 <string>acceptancesupport\PSB\Core\RabbitMq\RabbitMqTestExecutionConfigurator</string>
-                <array name="connection credentials">
+                <array>
                     <element key="host">
                         <string>127.0.0.1</string>
                     </element>
@@ -43,7 +43,7 @@
                   file="vendor/phpservicebus/core/tests/acceptancesupport/PhpUnit/TestExecutionConfiguratorLoader.php">
             <arguments>
                 <string>acceptancesupport\PSB\Persistence\Doctrine2\Doctrine2TestExecutionConfigurator</string>
-                <array name="connection params">
+                <array>
                     <element key="host">
                         <string>127.0.0.1</string>
                     </element>
@@ -62,7 +62,7 @@
                 </array>
                 <!--using a json encoding for the storage configs due to a bug in phpunit -->
                 <!--which does not handle nested arrays correctly-->
-                <string key="storage_configs">
+                <string>
                     <![CDATA[
                     {
                         "OUTBOX": {
