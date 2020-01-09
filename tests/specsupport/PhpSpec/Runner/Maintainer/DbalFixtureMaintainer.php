@@ -57,7 +57,7 @@ class DbalFixtureMaintainer implements Maintainer
         Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators
-    ) {
+    ): void {
         /** @var DatabaseAwareSpecInterface $context */
         $context->setConnection($this->connection);
         $context->setSchemaHelper($this->schemaHelper);
@@ -74,7 +74,7 @@ class DbalFixtureMaintainer implements Maintainer
         Specification $context,
         MatcherManager $matchers,
         CollaboratorManager $collaborators
-    ) {
+    ): void {
     }
 
     /**
